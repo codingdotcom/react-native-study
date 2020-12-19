@@ -1,23 +1,50 @@
-import React, { Component } from 'react';
-import {StyleSheet, View, Text } from 'react-native';
+import React, {useState, useRef} from 'react';
+import {Text, View, StyleSheet, Button, StatusBar} from 'react-native';
+import {Transitioning, Transition} from 'react-native-reanimated';
 
-class Home extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text> Home </Text>
-      </View>
-    );
-  }
+import {CustomButton} from '../../../Components/CustomButton';
+
+function Sequence() {
+  const transition = (
+    <Transition.Sequence>
+      <Transition.Out type="fade" />
+      <Transition.Change interpolation="easeInOut" />
+      <Transition.In type="fade" />
+    </Transition.Sequence>
+  );
+
+  let [showText, setShowText] = useState(true);
+  const ref = useRef();
+
+  return (
+    <Transitioning.View
+      ref={ref}
+      transition={transition}
+      style={styles.centerAll}>
+      <CustomButton
+        title="Touch Me"
+        onPress={() => {
+          ref.current.animateNextTransition();
+          setShowText(!showText);
+        }}
+      />
+      {showText && (
+        <Text style={styles.text}>Tap the above button to hide me</Text>
+      )}
+    </Transitioning.View>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centerAll: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  }
-})
+  },
+  text: {
+    fontSize: 16,
+    margin: 10,
+  },
+});
 
-export default Home;
+export default Sequence;

@@ -13,11 +13,14 @@ import {StyleSheet, Image, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import SplashScreen from 'react-native-splash-screen';
 
 import Home from './src/Screens/Home';
 import Explore from './src/Screens/Explore';
 import Saved from './src/Screens/Saved';
 import Inbox from './src/Screens/Inbox';
+
+import TabBar from './Components/TabBar';
 
 const tabIconWidth = 22;
 const tabIconHeight = 22;
@@ -29,6 +32,10 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 class App extends Component {
+  componentDidMount() {
+    setTimeout(() => SplashScreen.hide(), 500);
+  }
+
   render() {
     return (
       /********************/
@@ -40,6 +47,7 @@ class App extends Component {
       //     <Tab.Navigator
       //       initialRouteName="Home"
       //       tabBarOptions={{
+      //         showLabel: false,
       //         activeTintColor: tabActiveColor,
       //         inactiveTintColor: tabInActiveColor,
       //         labelStyle: {fontSize: 10},
@@ -135,12 +143,45 @@ class App extends Component {
       /****************************/
       /** reanmation2 사용한 탭메뉴 **/
       /***************************/
+
       <NavigationContainer>
         <Tab.Navigator>
-          <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Explore" component={Explore} />
-          <Tab.Screen name="Saved" component={Saved} />
-          <Tab.Screen name="Inbox" component={Inbox} />
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarButton: (props) => (
+                <TabBar label="Home" image="home" {...props} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Explore"
+            component={Explore}
+            options={{
+              tabBarButton: (props) => (
+                <TabBar label="Explore" image="explore" {...props} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Saved"
+            component={Saved}
+            options={{
+              tabBarButton: (props) => (
+                <TabBar label="Saved" image="saved" {...props} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Inbox"
+            component={Inbox}
+            options={{
+              tabBarButton: (props) => (
+                <TabBar label="Inbox" image="inbox" {...props} />
+              ),
+            }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     );
